@@ -1,0 +1,109 @@
+.alert.alert-info(ng-if='singleQuestionBase.appSettings.isDataNotLoaded()')
+	.alert-box
+		.loader
+	.alert-box
+		| {{ singleQuestionBase.appSettings.getLoaderText() }}
+                
+.app-layout(ng-if='singleQuestionBase.appSettings.isDataLoaded()')
+	.app-top.nowrap
+		.back-button
+			button.back-button(ng-click='singleQuestionBase.goBackButton()')
+				span.left-pointing-angle
+		.q-title {{ singleQuestionBase.dictionary.questionTitle }}
+		.add-button
+			button.add-button
+				span.plus-sign
+		span.q-last-time-dis
+			span {{ singleQuestionBase.dictionary.lastDiscussionTimeDescription }} {{ singleQuestionBase.dictionary.lastDiscussionTimeStatic }}
+                        
+	.app-body
+		.question.clear
+			.question-col-left
+				.question-row-title
+					.question-avatar(ng-click='singleQuestionBase.openModal(singleQuestionBase.question.authorId)')
+						img.img-circle(ng-src='{{ singleQuestionBase.getAvatar(singleQuestionBase.question.authorId) }}', alt='...')
+					.question-author(ng-click='singleQuestionBase.openModal(singleQuestionBase.question.authorId)')
+						span.question-author-name {{ singleQuestionBase.getUserName(singleQuestionBase.question.authorId) }}
+						span.description {{ singleQuestionBase.dictionary.questionAuthorDescription[1] }}
+					.question-title.nowrap
+						span {{ singleQuestionBase.question.title }}
+				.question-row-content
+					.question-desc
+						span {{ singleQuestionBase.question.content }}
+			.question-col-right
+				.question-row-options
+					button.button-link {{ singleQuestionBase.dictionary.unfollowButton }}
+				.question-row-votes
+					.question-votes-couter
+						span {{ singleQuestionBase.question.upvotes - singleQuestionBase.question.downvotes | abs }}
+					.question-votes-couter-desc
+						span(ng-if='singleQuestionBase.countVotes(singleQuestionBase.question) < 0') {{ singleQuestionBase.dictionary.downVote }}
+						span(ng-if='singleQuestionBase.countVotes(singleQuestionBase.question) >= 0') {{ singleQuestionBase.dictionary.upVote }}
+					.question-vote
+						ul.vote
+							li.vote-up(ng-class='[{disabled : singleQuestionBase.isQuestionVotingDisabled(singleQuestionBase.question.id) }]')
+								span.up-pointing-triangle(ng-click='singleQuestionBase.questionUpVote(singleQuestionBase.question)')
+							li.vote-down(ng-class='[{disabled : singleQuestionBase.isQuestionVotingDisabled(singleQuestionBase.question.id) }]')
+								span.down-pointing-triangle(ng-click='singleQuestionBase.questionDownVote(singleQuestionBase.question)')
+		.question-footer
+			button.question-btn {{ singleQuestionBase.dictionary.newAnswerButton }}
+                        
+		.comments-count
+			span.comments-count-number {{ singleQuestionBase.question.peersAnswered }}
+			span {{ singleQuestionBase.dictionary.peersAnswered }} {{ singleQuestionBase.getUserName(singleQuestionBase.question.authorId) }}
+                        
+		div(ng-repeat='relatedComment in singleQuestionBase.relatedComments')
+			.comment.clear
+				.comment-col-left
+					.comment-row-title
+						.comment-avatar(ng-click='singleQuestionBase.openModal(relatedComment.authorId)')
+							img.img-circle(ng-src='{{ singleQuestionBase.getAvatar(relatedComment.authorId) }}', alt='...')
+						.comment-author(ng-click='singleQuestionBase.openModal(relatedComment.authorId)')
+							span.comment-author-name {{ singleQuestionBase.getUserName(relatedComment.authorId) }}
+							span.description.space.dot {{ singleQuestionBase.dictionary.commentAuthorDescription }}
+							span.comment-author-time {{ relatedComment.time }}
+						.comment-desc
+							span {{ relatedComment.content }}
+				.comment-col-right
+					.comment-row-votes
+						.comment-votes-couter
+							span {{ relatedComment.upvotes - relatedComment.downvotes | abs }}
+						.comment-votes-couter-desc
+							span(ng-if='singleQuestionBase.countVotes(relatedComment) < 0') {{ singleQuestionBase.dictionary.downVote }}
+							span(ng-if='singleQuestionBase.countVotes(relatedComment) >= 0') {{ singleQuestionBase.dictionary.upVote }}
+						.comment-vote
+							ul.vote
+								li.vote-up(ng-class='[{disabled : singleQuestionBase.isCommentVotingDisabled(relatedComment.id) }]')
+									span.up-pointing-triangle(ng-click='singleQuestionBase.commentUpVote(relatedComment)')
+								li.vote-down(ng-class='[{disabled : singleQuestionBase.isCommentVotingDisabled(relatedComment.id) }]')
+									span.down-pointing-triangle(ng-click='singleQuestionBase.commentDownVote(relatedComment)')
+			.comment-footer(ng-if='!relatedComment.relatedDiscussion')
+				button.comment-btn {{ singleQuestionBase.dictionary.commentButton }}
+                                
+			div(ng-repeat='subRelatedComment in singleQuestionBase.subRelatedComments | limitCommentsByAnswer:relatedComment.id track by $index')
+				.subcomment.clear
+					.subcomment-col-left
+						.subcomment-row-title
+							.subcomment-avatar(ng-click='singleQuestionBase.openModal(subRelatedComment.authorId)')
+								img.img-circle(ng-src='{{ singleQuestionBase.getAvatar(subRelatedComment.authorId) }}', alt='...')
+							.subcomment-author(ng-click='singleQuestionBase.openModal(subRelatedComment.authorId)')
+								span.subcomment-author-name {{ singleQuestionBase.getUserName(subRelatedComment.authorId) }}
+								span.description.space.dot {{ singleQuestionBase.dictionary.commentAuthorDescription }}
+								span.subcomment-author-time {{ subRelatedComment.time }}
+							.subcomment-desc
+								span {{ subRelatedComment.content }}
+					.subcomment-col-right
+						.subcomment-row-votes
+							.subcomment-votes-couter
+								span {{ subRelatedComment.upvotes - subRelatedComment.downvotes | abs }}
+							.subcomment-votes-couter-desc
+								span(ng-if='singleQuestionBase.countVotes(subRelatedComment) < 0') {{ singleQuestionBase.dictionary.downVote }}
+								span(ng-if='singleQuestionBase.countVotes(subRelatedComment) >= 0') {{ singleQuestionBase.dictionary.upVote }}
+							.subcomment-vote
+								ul.vote
+									li.vote-up(ng-class='[{disabled : singleQuestionBase.isCommentVotingDisabled(subRelatedComment.id) }]')
+										span.up-pointing-triangle(ng-click='singleQuestionBase.commentUpVote(subRelatedComment)')
+									li.vote-down(ng-class='[{disabled : singleQuestionBase.isCommentVotingDisabled(subRelatedComment.id) }]')
+										span.down-pointing-triangle(ng-click='singleQuestionBase.commentDownVote(subRelatedComment)')
+				.subcomment-footer(ng-if='$last')
+					button.subcomment-btn {{ singleQuestionBase.dictionary.continueDiscussionButton }}

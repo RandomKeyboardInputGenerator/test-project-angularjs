@@ -1,0 +1,75 @@
+.alert.alert-info(ng-if='allQuestionsBase.appSettings.isDataNotLoaded()')
+	.alert-box
+		.loader
+	.alert-box
+		| {{ allQuestionsBase.appSettings.getLoaderText() }}
+                
+.app-layout(ng-if='allQuestionsBase.appSettings.isDataLoaded()')    
+	.app-top
+		.top-nav-row.clear
+			button.back-button
+				span.left-pointing-angle
+			.q-title {{ allQuestionsBase.dictionary.questionsTitle }}
+			button.add-button
+				span.plus-sign
+			.q-radio
+				form
+					input#myself.q-radio-input(type='radio', value='me', name='questions', ng-model='allQuestionsBase.radioFilter')
+					label(for='myself') {{ allQuestionsBase.dictionary.radioMyself }}
+					input#allquestions.q-radio-input(type='radio', value='all', name='questions', ng-model='allQuestionsBase.radioFilter')
+					label(for='allquestions') {{ allQuestionsBase.dictionary.radioAll }}
+			.q-sort
+				| {{ allQuestionsBase.dictionary.sortingDescription[0] }}
+				span(ng-class='[{\'q-sort-link\' : allQuestionsBase.isSortOrderNotEqual(\'recent\')}, {\'q-sort-link-active\' : allQuestionsBase.isSortOrderEqual(\'recent\')}]', ng-click='allQuestionsBase.changeQuestionsSortOrder(\'recent\')') {{ allQuestionsBase.dictionary.sortByRecent }}
+				| {{ allQuestionsBase.dictionary.sortingDescription[1] }}
+				span(ng-class='[{\'q-sort-link\' : allQuestionsBase.isSortOrderNotEqual(\'hot\')}, {\'q-sort-link-active\' : allQuestionsBase.isSortOrderEqual(\'hot\')}]', ng-click='allQuestionsBase.changeQuestionsSortOrder(\'hot\')') {{ allQuestionsBase.dictionary.sortByHot }}
+		.top-search-row.clear
+			input.q-search(type='text', name='search', title='search', placeholder='Search questions', ng-model='allQuestionsBase.searchQueryBuffor')
+			button.q-search-btn(ng-click='allQuestionsBase.searchQuestions()') {{ allQuestionsBase.dictionary.searchButton }}     
+                        
+	.app-body
+		.question(ng-repeat='question in allQuestionsBase.questions | limitTo:allQuestionsBase.visableQuestions | limitQuestionsByAuthor:allQuestionsBase.radioFilter:allQuestionsBase.userId | search:allQuestionsBase.searchQuery')
+			.question-row-title
+				.question-avatar(ng-click='allQuestionsBase.openModal(question.authorId)')
+					img.img-circle(ng-src='{{ allQuestionsBase.getAvatar(question.authorId) }}', alt='...')
+				.question-author
+					p
+						span.question-author-name(ng-click='allQuestionsBase.openModal(question.authorId)') {{ allQuestionsBase.getUserName(question.authorId) }}
+						span.description {{ allQuestionsBase.dictionary.questionAuthorDescription[1] }}
+					p.title-link(ui-sref='singleQuestion({id : question.id})')
+						span {{ question.title }}
+			.question-tabs.clear
+				.question-asked
+					.question-asked-content
+						.com-avatar
+						.question-com-footer
+							hr.grey
+							span {{ allQuestionsBase.dictionary.questionAuthorDescription[0] }}
+				.question-count(ng-if='question.comments.length - allQuestionsBase.visableComments > 0')
+					.question-count-content
+						.count-desc
+							span {{question.comments.length - allQuestionsBase.visableComments}}
+						.question-count-footer
+							span {{ allQuestionsBase.dictionary.countCommentsDescription }}
+						.count-dot-empty
+				.question-com(ng-repeat='questionComment in question.comments | limitTo:allQuestionsBase.visableComments track by $index', 
+                                                ng-class='[{\'col-1\' : $index === 0}, {\'col-2\' : $index === 1},{\'col-3\' : $index === 2},{\'col-4\' : $index === 3}]')
+					.question-com-content
+						.com-avatar(ng-click='allQuestionsBase.openModal(allQuestionsBase.getComment(questionComment).authorId)')
+							img.img-circle(ng-src='{{ allQuestionsBase.getAvatar(allQuestionsBase.getComment(questionComment).authorId) }}', alt='...')
+						.question-com-footer
+							hr(ng-class='[{\'black\' : allQuestionsBase.getComment(questionComment).type === \'ANSWERED\'}, {\'grey\' : allQuestionsBase.getComment(questionComment).type !== \'ANSWERED\'}]')
+							span {{ allQuestionsBase.getComment(questionComment).type }}
+						div(ng-class='[{\'question-dot\' : allQuestionsBase.getComment(questionComment).type === \'ANSWERED\'}, {\'question-dot-empty\' : allQuestionsBase.getComment(questionComment).type !== \'ANSWERED\'}]')
+				.question-info
+					p.question-info-top
+						span.number {{ question.relatedDiscussion }}
+						|  {{ allQuestionsBase.dictionary.relatedDiscussion }}
+					p.question-info-mid
+						span.number {{ question.peersInvolved }}
+						|  {{ allQuestionsBase.dictionary.peersInvolved }}
+					p.question-info-bottom
+						span.number {{ question.conversations }}
+						|  {{ allQuestionsBase.dictionary.conversations }}
+		.question-load-more
+			button.button-link(ng-click='allQuestionsBase.showMoreQuestions()') {{ allQuestionsBase.dictionary.loadMoreButton }}
