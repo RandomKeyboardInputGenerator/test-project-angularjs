@@ -1,9 +1,4 @@
 import AppSettings from '../config/app-settings';
-//import ProfileBaseModalComponent from '../components/profile-base-modal.component';
-
-import template from '../templates/profile-base-modal.component.jade';
-import controller from '../controllers/profile-base-modal.controller.js';
-import '../styles/profile-base-modal.component.scss';
 
 import _ from 'lodash'
 

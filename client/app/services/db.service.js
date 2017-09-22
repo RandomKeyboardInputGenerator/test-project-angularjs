@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 class DbService {
-    constructor($http, $timeout, dataService) { 
+    constructor(dataService) { 
         'ngInject';
         
         this.fakeHttp = dataService;
