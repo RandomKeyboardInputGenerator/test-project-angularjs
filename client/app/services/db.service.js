@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _ from 'lodash';
 
 class DbService {
     constructor(dataService) { 
@@ -28,7 +28,7 @@ class DbService {
     }
     
     getQuestion(questionId) {
-        return this.getFromDatabase('questions/' + questionId);
+        return this.getFromDatabase(`questions/${questionId}`);
     }
     
     getCommments() {
@@ -36,15 +36,15 @@ class DbService {
     }
     
     getCommmentsOnTheQuestion(questionId) {
-        return this.getFromDatabase('comments/?qId=' + questionId);
+        return this.getFromDatabase(`comments/?qId=${questionId}`);
     }
     
     commmentVote(comment) {
-        return this.putToDatabase('comments/' + comment.id, comment);
+        return this.putToDatabase(`comments/${comment.id}`, comment);
     }
     
     questionVote(question) {
-        return this.putToDatabase('questions/' + question.id, question);
+        return this.putToDatabase(`questions/${question.id}`, question);
     }
     
     upVote(entry) {
@@ -78,15 +78,15 @@ class DbService {
     }
     
     getUser(userId) {
-        return this.getFromDatabase('authors/' + userId);
+        return this.getFromDatabase(`authors/${userId}`);
     }
     
     saveUser(user) {
-        return this.putToDatabase('authors/' + user.id, user);
+        return this.putToDatabase(`authors/${user.id}`, user);
     }
     
     getAvatar(avatarId) {
-        return this.getFromDatabase('avatars/' + avatarId);
+        return this.getFromDatabase(`avatars/${avatarId}`);
     }
     
     getAvatars() {
@@ -96,6 +96,6 @@ class DbService {
     handleError(error) {
         console.error('An error occurred', error);
     }
-};
+}
 
 export default DbService;

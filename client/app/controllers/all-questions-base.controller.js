@@ -1,10 +1,11 @@
 import AppSettings from '../config/app-settings';
 
-import _ from 'lodash'
+import _ from 'lodash';
 
 class AllQuestionsBaseController {
     constructor(dbService, $window, $scope, $mdDialog, $rootElement) {
         'ngInject';
+
         this.dialog = $mdDialog;
         this.dataService = dbService;
         
@@ -40,17 +41,16 @@ class AllQuestionsBaseController {
     }
     
     checkCommentsVisibility(windowWidth) {
-        if (windowWidth < this.appSettings.FULL_VIEW_MODE_MIN_WIDTH ) {  
+        if (windowWidth < this.appSettings.FULL_VIEW_MODE_MIN_WIDTH) {  
             this.visableComments = 1; 
-        }
-        else { 
+        } else { 
             this.visableComments = 4; 
         }
     }
     
     openModal(userId) {
         this.data = { 
-            'userId': userId, 
+            userId, 
             'users': this.users, 
             'dictionary': this.dictionary, 
             'questions': this.questions 
@@ -86,14 +86,13 @@ class AllQuestionsBaseController {
     sortQuestions() {
         if (this.sortOrder === 'recent') {
             this.questions = _.sortBy(this.questions, 'lastTimeDiscusedDays');
-        }
-        else {
+        } else {
             this.questions = _.sortByOrder(this.questions, 'peersInvolved', 'desc');
         }
     }
     
     getComment(id) {
-        let index = _.findIndex(this.comments, comment => comment.id === id);
+        const index = _.findIndex(this.comments, comment => comment.id === id);
         return this.comments[index];
     }
     
@@ -102,19 +101,16 @@ class AllQuestionsBaseController {
     }
     
     getDictionary() {
-        this.dataService.getDictionary().then(
-                dictionary => {
+        this.dataService.getDictionary().then(dictionary => {
                     this.dictionary = dictionary;
                     this.appSettings.setLoadedStatus('dictionary');
-                }
-            );
+                });
     }
     
     getQuestions() {
-        this.dataService.getQuestions().then(
-                questions => {
+        this.dataService.getQuestions().then(questions => {
                     this.questions = questions;
-                    let author = { name: ''};
+                    let author = {name: ''};
                     _.forEach(this.questions, (question, index, questions) => {
                         author = this.findUser(question.authorId);
                         question.author = author.name;
@@ -122,22 +118,18 @@ class AllQuestionsBaseController {
                     });
                     this.sortQuestions();
                     this.appSettings.setLoadedStatus('questions');
-                }
-            );
+                });
     }
     
     getComments() {
-        this.dataService.getCommments().then(
-                comments => {
+        this.dataService.getCommments().then(comments => {
                     this.comments = comments;
                     this.appSettings.setLoadedStatus('comments');
-                }
-            );
+                });
     }
     
     getAvatars() {
-        this.dataService.getAvatars().then(
-                avatars => {
+        this.dataService.getAvatars().then(avatars => {
                         let avatar = {};
                         _.forEach(this.users, (user, index, users) => {
                             avatar = _.find(avatars, avatar => avatar.id === user.avatarId);
@@ -145,8 +137,7 @@ class AllQuestionsBaseController {
                             users[index] = _.assign(_.omit(user, 'avatarId'), _.omit(avatar, 'id'));
                         });
                         this.appSettings.setLoadedStatus('users');
-                    }
-            );
+                    });
     }
     
     findUser(userId) {
@@ -160,13 +151,11 @@ class AllQuestionsBaseController {
     }
     
     getUsers() {
-        this.dataService.getUsers().then(
-                users => {
+        this.dataService.getUsers().then(users => {
                         this.users = users;
                         this.getAvatars();
                         this.getQuestions();
-                    }
-            );
+                    });
     }
     
     getUserName(userId) {

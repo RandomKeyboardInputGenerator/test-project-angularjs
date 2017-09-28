@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _ from 'lodash';
 
 export default class DataService {
     constructor($timeout) {
@@ -665,11 +665,11 @@ export default class DataService {
         ];
         
         this.data = {
-            'dictionary': dictionary,
-            'authors'   : authors,
-            'avatars'   : avatars,
-            'questions' : questions,
-            'comments'  : comments
+            dictionary,
+            authors,
+            avatars,
+            questions,
+            comments
         };
     }
     

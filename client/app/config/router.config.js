@@ -1,8 +1,10 @@
 const RouterConfig = 
         ($stateProvider, $urlRouterProvider, $httpProvider) => {
                 'ngInject';
+
                 var interceptor = ($q, $location) => {
                     'ngInject';
+
                     return {
                         request: config => {
                             return config;

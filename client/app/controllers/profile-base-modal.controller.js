@@ -1,10 +1,11 @@
 import AppSettings from '../config/app-settings';
 
-import _ from 'lodash'
+import _ from 'lodash';
 
 class ProfileBaseModalController {
     constructor($mdDialog) {
         'ngInject';
+
         this.appSettings = new AppSettings();
         // Injected data
         this.dialogData = this.data;
@@ -13,7 +14,7 @@ class ProfileBaseModalController {
         this.authorId = this.dialogData.userId;
         this.users = this.dialogData.users;
         this.dictionary = this.dialogData.dictionary;
-        let questions = this.dialogData.questions;
+        const questions = this.dialogData.questions;
         
         this.profileAuthor = {
             'id': this.authorId,
@@ -50,7 +51,7 @@ class ProfileBaseModalController {
         let memberTime = this.profileAuthor.memberTime;
         this.equalJoinTimeUsers = _.slice(
             _.filter(this.users, user => { 
-                return ( ( user.memberTime === memberTime ) && ( user.id !== authorId ) )
+                return user.memberTime === memberTime && user.id !== authorId;  
                 }),
                 0, 3
             );

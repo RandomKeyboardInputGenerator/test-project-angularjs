@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _ from 'lodash';
 
 class AppSettings {
     constructor() {
@@ -10,10 +10,10 @@ class AppSettings {
         this.loader = { 
             'text': 'Please wait. I\'m loading data...', 
             'data': {
-                'dictionary': { 'status' : false }, 
-                'questions': { 'status' : false }, 
-                'comments': { 'status' : false }, 
-                'users': { 'status' : false } 
+                'dictionary': {'status': false}, 
+                'questions': {'status': false}, 
+                'comments': {'status': false}, 
+                'users': {'status': false} 
             }
         };
     }
@@ -31,7 +31,7 @@ class AppSettings {
     }
     
     setLoadedStatus(resourceName) {
-        _.set(this.loader.data, resourceName+'.status', true);
+        _.set(this.loader.data, `${resourceName}.status`, true);
     }
 }
 

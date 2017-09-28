@@ -1,13 +1,14 @@
 import AppSettings from '../config/app-settings';
 
-import _ from 'lodash'
+import _ from 'lodash';
 
 class SingleQuestionBaseController {
     constructor(dbService, $stateParams, $window, $mdDialog, $scope, $rootElement) {
         'ngInject';
+
         this.dialog = $mdDialog;
         this.dataService = dbService;
-        this.questionId = +$stateParams.id || 0;
+        this.questionId = Number($stateParams.id) || 0;
         this.location = $window.history;
         
         this.appSettings = new AppSettings();
@@ -34,7 +35,7 @@ class SingleQuestionBaseController {
     
     openModal(userId) {
         this.data = { 
-            'userId': userId, 
+            userId, 
             'users': this.users, 
             'dictionary': this.dictionary, 
             'questions': this.questions 
@@ -55,32 +56,26 @@ class SingleQuestionBaseController {
     }
 
     getRelatedComments(questionId) {
-        this.dataService.getCommmentsOnTheQuestion(questionId).then(
-            comments => {
+        this.dataService.getCommmentsOnTheQuestion(questionId).then(comments => {
                 this.relatedComments = _.filter(comments, comment => comment.type === 'ANSWERED');
                 this.subRelatedComments = _.filter(comments, comment => comment.type === 'COMMENTED');
                 this.appSettings.setLoadedStatus('comments');
-            }
-        );
+            });
     }
 
     getQuestions(questionId) {
-        this.dataService.getQuestions().then(
-            questions => {
+        this.dataService.getQuestions().then(questions => {
                 this.questions = questions;
                 this.question = _.find(this.questions, question => question.id === questionId);
                 this.appSettings.setLoadedStatus('questions');
-            }
-        );
+            });
     }
 
     getDictionary() {
-        this.dataService.getDictionary().then(
-            dictionary => {
+        this.dataService.getDictionary().then(dictionary => {
                 this.dictionary = dictionary;
                 this.appSettings.setLoadedStatus('dictionary');
-            }
-        );
+            });
     }
 
     isUserNotVoteOnComment(commentId) {
@@ -98,24 +93,20 @@ class SingleQuestionBaseController {
     commentUpVote(comment) {
         if (this.isCommentVotingEnabled(comment.id)) {
             this.voteEnable = false;
-            this.dataService.commmentUpVote(comment).then(
-                () => {
+            this.dataService.commmentUpVote(comment).then(() => {
                     this.user.votedComments.push(comment.id);
                     this.saveUser();
-                }
-            );
+                });
         }
     }
 
     commentDownVote(comment) {
         if (this.isCommentVotingEnabled(comment.id)) {
             this.voteEnable = false;
-            this.dataService.commentDownVote(comment).then(
-                () => {
+            this.dataService.commentDownVote(comment).then(() => {
                     this.user.votedComments.push(comment.id);
                     this.saveUser();
-                }
-            );
+                });
         }
     }
 
@@ -134,24 +125,20 @@ class SingleQuestionBaseController {
     questionUpVote(question) {
         if (this.isQuestionVotingEnabled(question.id)) {
             this.voteEnable = false;
-            this.dataService.questionUpVote(question).then(
-                () => {
+            this.dataService.questionUpVote(question).then(() => {
                     this.user.votedQuestions.push(question.id);
                     this.saveUser();
-                }
-            );
+                });
         }
     }
 
     questionDownVote(question) {
         if (this.isQuestionVotingEnabled(question.id)) {
             this.voteEnable = false;
-            this.dataService.questionDownVote(question).then(
-                () => {
+            this.dataService.questionDownVote(question).then(() => {
                     this.user.votedQuestions.push(question.id);
                     this.saveUser();
-                }
-            );
+                });
         }
     }
 
@@ -169,8 +156,7 @@ class SingleQuestionBaseController {
     }
 
     getAvatars() {
-        this.dataService.getAvatars().then(
-            avatars => {
+        this.dataService.getAvatars().then(avatars => {
                 let avatar = {};
                 _.forEach(this.users, (user, index, users) => {
                     avatar = _.find(avatars, avatar => avatar.id === user.avatarId);
@@ -178,8 +164,7 @@ class SingleQuestionBaseController {
                     users[index] = _.assign(_.omit(user, 'avatarId'), _.omit(avatar, 'id'));
                 });
                 this.getUser(this.userId);
-            }
-        );
+            });
     }
 
     findUser(userId) {
@@ -193,13 +178,11 @@ class SingleQuestionBaseController {
     }
 
     getUsers() {
-        this.dataService.getUsers().then(
-            users => {
+        this.dataService.getUsers().then(users => {
                 this.users = users;
                 this.getAvatars();
                 this.getQuestions(this.questionId);
-            }
-        );
+            });
     }
 
     getUserName(userId) {
