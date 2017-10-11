@@ -1,4 +1,4 @@
-![Angular.js] (https://commons.wikimedia.org/wiki/File:AngularJS_logo.svg)
+![Angular.js](https://upload.wikimedia.org/wikipedia/commons/f/fc/AngularJS-large.png)
 
 # Angular.js demonstration application
 
