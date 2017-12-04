@@ -2,9 +2,11 @@
 
 # Angular.js demonstration application
 
+Discussion forum consisting of three views. 
+Lists of all topics, a single topic with a discussion about it, and a user profile view. 
 The project consists of progressive phases.
 
-Task 1: Implement views - done  
+Task 1: Implementation of views - done  
 Task 2: Make them responsive - done  
 Task 3: Connect modal to users - done  
 Task 4: Use templates - done  
@@ -25,28 +27,28 @@ To get the server running locally:
 
 ## Dependencies
 
-- [angular.js] (https://github.com/angular/angular.js) - The platform for handling routing, pagination, sorting, search, voting, etc.
-- [material] (https://github.com/angular/material) - For handling modal windows
-- [bootstrap-css-only] (https://github.com/fyockm/bootstrap-css-only) - For a base to custom styling
-- [normalize.css] (https://github.com/necolas/normalize.css) - For CSS resets
-- [lodash] (https://github.com/lodash/lodash) - For complex operations with data
-- [pug] (https://github.com/pugjs/pug) - For building complex templates
-- [babel] (https://github.com/babel/babel) - For write code in ECMAScript 6
-- [webpack] (https://github.com/gulpjs/gulp) - For generating elegant views from Pug templates and CSS styles from Sass 
+- [angular.js](https://github.com/angular/angular.js) - The platform for handling routing, pagination, sorting, search, voting, etc.
+- [material](https://github.com/angular/material) - For handling modal windows
+- [bootstrap-css-only](https://github.com/fyockm/bootstrap-css-only) - For a base to custom styling
+- [normalize.css](https://github.com/necolas/normalize.css) - For CSS resets
+- [lodash](https://github.com/lodash/lodash) - For complex operations with data
+- [pug](https://github.com/pugjs/pug) - For building complex templates
+- [babel](https://github.com/babel/babel) - For write code in ECMAScript 6
+- [webpack](https://github.com/gulpjs/gulp) - For generating elegant views from Pug templates and CSS styles from Sass 
 
 ## Application Structure
 
 - `client/`
     - `app/`
-        - `components/` - This folder contains configuration for aplication's components
-        - `config/` - This folder contains base configuration for views loader, readonly default values and the route definitions
+        - `components/` - Configuration for aplication's components
+        - `config/` - Base configuration for views loader, readonly default values and routing configuration
         - `controllers/` - This folder contains configuration for aplication's controllers
-        - `filters/` - This folder contains filters for data transformations 
-        - `modules/` - This folder contains configuration for app modules
+        - `filters/` - Filters for data transformations 
+        - `modules/` - Configuration for app modules
             - `app.module.js` - The entry point to the application.
-        - `services/` - This folder contains services to organize and share code across the application
-        - `styles/` - This folder contains custom Sass styles
-        - `templates/` - This folder contains Pug templates
-    - `assets/` - This folder contains images and fonts
+        - `services/` - Services to organize and share code across the application
+        - `styles/` - Custom Sass styles
+        - `templates/` - Pug templates
+    - `assets/` - Images & fonts
 - `dist/` - This folder contains builded and bundled application
 

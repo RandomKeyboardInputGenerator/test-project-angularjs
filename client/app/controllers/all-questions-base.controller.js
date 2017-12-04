@@ -8,7 +8,12 @@ class AllQuestionsBaseController {
 
         this.dialog = $mdDialog;
         this.dataService = dbService;
-        
+        this.window = $window;
+        this.scope = $scope;
+        this.rootElement = $rootElement;
+    }
+    
+    $onInit() {
         this.appSettings = new AppSettings();
         this.userId = this.appSettings.DEFAULT_USER_ID;
         this.radioFilter = 'all';
@@ -22,21 +27,19 @@ class AllQuestionsBaseController {
         this.comments = [];
         this.users = [];
         this.data = {};
-        this.scope = $scope;
-        this.rootElement = $rootElement;
         
-        this.checkCommentsVisibility($window.innerWidth);
+        this.checkCommentsVisibility(this.window.innerWidth);
         
         this.getDictionary();
         this.getComments();
         this.getUsers();
         
-        let appWindow = angular.element($window);
+        let appWindow = angular.element(this.window);
         // Window's resize watcher
         appWindow.bind('resize', () => {
-            this.checkCommentsVisibility($window.innerWidth);
+            this.checkCommentsVisibility(this.window.innerWidth);
             // $scope update after changes
-            $scope.$apply();
+            this.scope.$apply();
         });
     }
     
@@ -87,7 +90,8 @@ class AllQuestionsBaseController {
         if (this.sortOrder === 'recent') {
             this.questions = _.sortBy(this.questions, 'lastTimeDiscusedDays');
         } else {
-            this.questions = _.sortByOrder(this.questions, 'peersInvolved', 'desc');
+            this.questions = _.sortBy(this.questions, 'peersInvolved');
+            this.questions = _.reverse(this.questions);
         }
     }
     

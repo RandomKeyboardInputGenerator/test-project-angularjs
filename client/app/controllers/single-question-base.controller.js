@@ -8,8 +8,15 @@ class SingleQuestionBaseController {
 
         this.dialog = $mdDialog;
         this.dataService = dbService;
-        this.questionId = Number($stateParams.id) || 0;
-        this.location = $window.history;
+        this.window = $window;
+        this.scope = $scope;
+        this.rootElement = $rootElement;
+        this.stateParams = $stateParams;
+    }
+    
+    $onInit() {
+        this.questionId = Number(this.stateParams.id) || 0;
+        this.location = this.window.history;
         
         this.appSettings = new AppSettings();
         this.userId = this.appSettings.DEFAULT_USER_ID;
@@ -25,8 +32,6 @@ class SingleQuestionBaseController {
         this.questions = {};
         this.voteEnable = true;
         this.data = {};
-        this.scope = $scope;
-        this.rootElement = $rootElement;
         
         this.getDictionary();
         this.getRelatedComments(this.questionId);

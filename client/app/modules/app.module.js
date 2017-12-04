@@ -2,6 +2,7 @@ import 'bootstrap-css-only';
 import 'normalize.css';
 import 'angular-material/angular-material.css';
 import '../../styles.css';
+
 import angular from 'angular';
 import uiRouter from 'angular-ui-router';
 import ngResource from 'angular-resource';

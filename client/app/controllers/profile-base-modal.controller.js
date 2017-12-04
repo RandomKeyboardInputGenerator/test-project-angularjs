@@ -6,10 +6,13 @@ class ProfileBaseModalController {
     constructor($mdDialog) {
         'ngInject';
 
+        this.dialogRef = $mdDialog;
+    }
+    
+    $onInit() {
         this.appSettings = new AppSettings();
         // Injected data
         this.dialogData = this.data;
-        this.dialogRef = $mdDialog;
         
         this.authorId = this.dialogData.userId;
         this.users = this.dialogData.users;
